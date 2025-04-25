@@ -8,6 +8,13 @@ class TextStyleSettings {
   double fontSize;
 
   TextStyleSettings({required this.color, required this.fontSize});
+
+  TextStyleSettings copyWith({Color? color, double? fontSize}) {
+    return TextStyleSettings(
+      color: color ?? this.color,
+      fontSize: fontSize ?? this.fontSize,
+    );
+  }
 }
 
 final textStyleNotifier = ValueNotifier<TextStyleSettings>(

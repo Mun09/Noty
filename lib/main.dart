@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:untitled/setting_page.dart';
-import 'package:untitled/textstyle_notifier.dart';
+import 'package:noty/setting_page.dart';
+import 'package:noty/setting_service.dart';
+import 'package:noty/textstyle_notifier.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,11 +15,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   static const platform = MethodChannel('com.example/native');
   final TextEditingController controller = TextEditingController();
 
+  Future<void> _init() async {
+    await loadTextFromAndroid();
+    await SettingService.loadSettingFromAndroid();
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _loadTextFromAndroid();
+    _init();
   }
 
   @override
@@ -36,7 +42,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _loadTextFromAndroid() async {
+  Future<void> loadTextFromAndroid() async {
     try {
       final String result = await platform.invokeMethod('loadText');
       setState(() {
@@ -49,7 +55,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
       saveTextToAndroid(controller.text); // 앱이 백그라운드로 갈 때 저장
     }
   }
@@ -59,9 +66,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Colors.white),
-        ),
+        textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(color: Colors.white70),
           enabledBorder: UnderlineInputBorder(
@@ -72,13 +77,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ),
         ),
       ),
-      home: NotyHomePage(controller: controller,)
+      home: NotyHomePage(controller: controller),
     );
   }
 }
 
 class NotyHomePage extends StatelessWidget {
   final TextEditingController controller;
+
   const NotyHomePage({super.key, required this.controller});
 
   @override
@@ -87,17 +93,22 @@ class NotyHomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
-            },
-          )
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0), // 오른쪽에서 12px 안쪽으로 밀기
+            child: IconButton(
+              icon: const Icon(Icons.settings),
+              iconSize: 32.0,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
+            ),
+          ),
         ],
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
