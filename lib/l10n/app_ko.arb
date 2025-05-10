@@ -1,0 +1,12 @@
+{
+  "appTitle": "Noty",
+  "noteHint": "텍스트를 입력하세요...",
+  "settings": "설정",
+  "fontSizeLabel": "글자 크기",
+  "fontColorLabel": "글자 색상",
+  "implementSetting": "적용하기",
+  "reTry": "다시 시도",
+  "widgetSetting": "위젯 설정",
+  "failedToLoadSetting": "설정을 불러오는 데 실패했습니다.",
+  "failedToSaveSetting": "설정을 저장하는 데 실패했습니다."
+}

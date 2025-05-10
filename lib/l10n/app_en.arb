@@ -1,0 +1,12 @@
+{
+  "appTitle": "Noty",
+  "noteHint": "Enter text...",
+  "settings": "Settings",
+  "fontSizeLabel": "Font Size",
+  "fontColorLabel": "Font Color",
+  "implementSetting": "Apply",
+  "reTry": "Retry",
+  "widgetSetting": "Widget Settings",
+  "failedToLoadSetting": "Failed to load settings.",
+  "failedToSaveSetting": "Failed to save settings."
+}

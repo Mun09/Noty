@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:noty/setting_service.dart';
 import 'package:noty/textstyle_notifier.dart';
 
+import 'l10n/app_localizations.dart';
+
 /// A page that allows users to customize text settings including color and font size.
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -40,7 +42,7 @@ class _SettingsPageState extends State<SettingsPage> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = '설정을 불러오는 데 실패했습니다.';
+        _errorMessage = AppLocalizations.of(context)!.failedToLoadSetting;
       });
     }
 
@@ -49,8 +51,6 @@ class _SettingsPageState extends State<SettingsPage> {
       _selectedFontSize = textStyleNotifier.value.fontSize;
       _isLoading = false;
     });
-
-    print('현재 선택된 색상: $_selectedColor');
   }
 
   /// Saves the current settings and navigates back.
@@ -69,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = '설정을 저장하는 데 실패했습니다.';
+        _errorMessage = AppLocalizations.of(context)!.failedToSaveSetting;
       });
     }
   }
@@ -78,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('위젯 설정'),
+        title:  Text(AppLocalizations.of(context)!.widgetSetting),
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -99,11 +99,11 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('글자 색상'),
+            _buildSectionTitle(AppLocalizations.of(context)!.fontColorLabel),
             const SizedBox(height: 8),
             _buildColorPicker(),
             const SizedBox(height: _sectionSpacing),
-            _buildSectionTitle('폰트 크기'),
+            _buildSectionTitle(AppLocalizations.of(context)!.fontSizeLabel),
             _buildFontSizeSlider(),
             const SizedBox(height: _sectionSpacing),
             _buildApplyButton(),
@@ -121,7 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
           const SizedBox(height: 16),
-          ElevatedButton(onPressed: _loadSettings, child: const Text('다시 시도')),
+          ElevatedButton(onPressed: _loadSettings, child: AppLocalizations.of(context)!.reTry),
         ],
       ),
     );
@@ -236,7 +236,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   height: 20,
                   child: CircularProgressIndicator(color: Colors.white),
                 )
-                : const Text('적용하기', style: TextStyle(fontSize: 16)),
+                : Text(AppLocalizations.of(context)!.implementSetting, style: const TextStyle(fontSize: 16)),
+
       ),
     );
   }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:noty/setting_page.dart';
 import 'package:noty/setting_service.dart';
 import 'package:noty/textstyle_notifier.dart';
 
+import 'l10n/app_localizations.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -64,6 +69,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      // 지원하는 언어 목록
+      supportedLocales: const [
+        Locale('en'), // 영어
+        Locale('ko'), // 한국어
+      ],
+      // 시스템 언어 설정을 따름
+      locale: null,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
         textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
@@ -77,6 +95,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ),
         ),
       ),
+
       home: NotyHomePage(controller: controller),
     );
   }
